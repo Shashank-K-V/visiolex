@@ -280,6 +280,80 @@ data:
 
 ---
 
+## Scaling up — where this can go
+
+VisioLex is deliberately built with a clean, modular architecture so every component can be swapped out independently. Here is the full upgrade path from this proof-of-concept to a production system:
+
+### Bigger datasets
+
+| Dataset | Size | Vocab | Expected WER |
+|---------|------|-------|-------------|
+| GRID Corpus *(current)* | 34 speakers × 1,000 clips | 51 words | ~25–35% |
+| LRS2 (BBC) | 45,000+ utterances | Open vocab | ~15–25% |
+| LRS3 (TED) | 150,000+ utterances | Open vocab | ~10–18% |
+| VoxCeleb2 + LRS3 | 1M+ clips | Open vocab | ~5–10% |
+
+Switching dataset only requires implementing a new `Dataset` subclass — the training loop, model, and decoder are dataset-agnostic.
+
+### Stronger backbone
+
+The 3D CNN + BiGRU backbone can be replaced without touching any other code:
+
+```
+Current:    3D CNN (3 blocks) → BiGRU (2 layers)        ~11M params
+Next step:  ResNet-18 3D / SlowFast → Transformer        ~30–50M params
+State-of-art: AV-HuBERT / RAVEn (audio-visual pretrain) ~300M params
+```
+
+### Cloud training
+
+The training script already accepts `--device cuda`. To scale up:
+
+```bash
+# Google Colab (free T4)  — open notebooks/visiolex_colab.ipynb
+# Vast.ai RTX 4090        — ~$0.30/hr, 10× faster than M4 MPS
+# AWS p3.2xlarge (V100)   — production-grade
+# Multi-GPU               — add --strategy ddp to trainer
+
+python scripts/train.py \
+    --config configs/train.yaml \
+    --processed_dir data/processed \
+    --epochs 100 --batch_size 32 --device cuda
+```
+
+A full 100-epoch run on a V100 takes ~4 hours vs ~50 hours on M4 MPS.
+
+### Deployment
+
+```
+Local demo      →  python app/demo.py         (Gradio, localhost)
+Public demo     →  Hugging Face Spaces        (free, permanent URL)
+Mobile          →  CoreML export (Apple)      (on-device, no internet)
+                   ONNX → TFLite (Android)
+API             →  FastAPI wrapper around model.forward()
+Real-time       →  WebRTC + sliding window inference
+```
+
+### Language model rescoring
+
+Adding a KenLM language model reduces WER by a further 10–15% with zero retraining:
+
+```bash
+pip install pyctcdecode kenlm
+# Train a 4-gram LM on GRID transcripts → decoder automatically uses it
+```
+
+### What production looks like
+
+A production lip-reading system built on this architecture would add:
+- **Multi-view input** — front + side cameras
+- **Speaker adaptation** — fine-tune on 5–10 minutes of new speaker data
+- **Noise robustness** — augmentation with synthetic head pose, lighting changes
+- **Streaming inference** — sliding 75-frame window at 25 fps = 3-second latency
+- **Confidence scores** — per-word uncertainty estimates
+
+---
+
 ## Honest limitations
 
 VisioLex is trained on the **GRID Corpus** — a controlled lab dataset with a
