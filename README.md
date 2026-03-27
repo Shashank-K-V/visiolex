@@ -8,6 +8,7 @@
 [![PyTorch 2.11](https://img.shields.io/badge/PyTorch-2.11-EE4C2C?logo=pytorch&logoColor=white)](https://pytorch.org/)
 [![Apple MPS](https://img.shields.io/badge/Apple%20M4-MPS%20Accelerated-black?logo=apple&logoColor=white)](https://developer.apple.com/metal/)
 [![MediaPipe](https://img.shields.io/badge/MediaPipe-0.10-0097A7?logo=google&logoColor=white)](https://mediapipe.dev/)
+[![WER 15.5%](https://img.shields.io/badge/Val%20WER-15.5%25-brightgreen)](https://github.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 **VisioLex watches a person's mouth through a camera and transcribes what they say — with zero audio.**
@@ -71,17 +72,34 @@ Silent video  →  MediaPipe Face Landmarker  →  Mouth ROI (64×64 px, 75 fram
 
 ## Results
 
-Trained on 10 speakers × 1,000 clips from the GRID Corpus (10,000 video clips total):
+Trained on **10 speakers × 1,000 clips = 10,000 video clips** from the GRID Corpus.
+Trained entirely on an **Apple M4 Mac Mini** (MPS backend). No cloud GPU. No paid compute.
 
-| Epochs | Decoder | Val WER | Val Loss |
-|--------|---------|---------|----------|
-| 1 | Greedy | 1.000 | 2.75 |
-| 3 | Greedy | 0.967 | 2.11 |
-| 10 | Greedy | **0.875** | 1.21 |
-| 75 *(target)* | Greedy | ~0.25–0.35 | — |
-| 75 *(target)* | Beam + KenLM | ~0.18–0.25 | — |
+### Training progression
 
-> Training is actively running. Results will be updated.
+| Epoch | Val WER | Word Accuracy | Val Loss | Note |
+|-------|---------|--------------|---------|------|
+| 1 | 1.000 | 0% | 2.75 | Baseline |
+| 3 | 0.967 | 3.3% | 2.11 | |
+| 10 | 0.875 | 12.5% | 1.21 | |
+| 16 | 0.395 | 60.5% | 0.43 | Breakthrough |
+| 20 | 0.273 | 72.7% | 0.31 | |
+| 61 | 0.157 | 84.3% | 0.19 | |
+| **65** | **0.155** | **84.5%** | **0.18** | **Best checkpoint** 🏆 |
+| 75 | 0.157 | 84.3% | 0.18 | Final epoch |
+
+### Final numbers
+
+| Metric | Value |
+|--------|-------|
+| **Best Val WER** | **0.155** |
+| **Word Accuracy** | **84.5%** |
+| Best checkpoint epoch | 65 / 75 |
+| Final train loss | 0.046 |
+| Final val loss | 0.182 |
+| Training time | ~7 hours on Apple M4 MPS |
+| Total training clips | 10,000 |
+| Parameters | 11.3M (trained from scratch) |
 
 ---
 
@@ -381,7 +399,7 @@ demonstrating the full pipeline.
 - [x] Beam search decoder
 - [x] Gradio demo (upload + webcam)
 - [x] Native Apple M4 MPS training
-- [ ] Full 75-epoch training run
+- [x] Full 75-epoch training run — **84.5% word accuracy (WER 0.155)**
 - [ ] Hugging Face Spaces deployment
 - [ ] LRS2/LRS3 fine-tuning
 
