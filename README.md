@@ -67,6 +67,7 @@ Silent video  →  MediaPipe Face Landmarker  →  Mouth ROI (64×64 px, 75 fram
 | Decoder | Greedy CTC / Beam search | `str` |
 
 **11.3M trainable parameters** — trained from scratch, no pretrained weights.
+<img width="1889" height="808" alt="Visiolex" src="https://github.com/user-attachments/assets/bf0f0d1d-3b96-4535-bbcd-8170603fca55" />
 
 ---
 
