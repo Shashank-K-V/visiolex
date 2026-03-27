@@ -1,0 +1,17 @@
+torch
+torchvision
+torchaudio
+numpy
+pillow
+opencv-python
+mediapipe
+pyyaml
+tqdm
+editdistance
+pandas
+matplotlib
+scikit-learn
+pytest
+gradio
+wandb
+pyctcdecode

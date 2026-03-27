@@ -1,0 +1,36 @@
+data:
+  grid_root: "data/grid"          # path to GRID corpus root
+  processed_dir: "data/processed"  # pre-processed mouth crops
+  num_frames: 75                   # frames per clip (3s @ 25fps)
+  img_size: 64                     # mouth crop size (px)
+  num_workers: 4
+  train_speakers: null             # null = all 34; or list e.g. [1,2,3]
+  val_split: 0.1
+
+model:
+  cnn_channels: [32, 64, 96]
+  gru_hidden: 256
+  gru_layers: 2
+  dropout: 0.5
+
+training:
+  epochs: 50
+  batch_size: 16
+  lr: 3.0e-4
+  weight_decay: 1.0e-5
+  grad_clip: 5.0
+  scheduler: cosine               # cosine | step | none
+  warmup_epochs: 2
+  checkpoint_dir: "checkpoints"
+  log_interval: 20                # steps between console logs
+
+wandb:
+  enabled: true
+  project: "visiolex"
+  entity: null                    # set to your W&B username
+
+decoding:
+  beam_width: 10
+  lm_path: null                   # path to KenLM .binary; null = no LM
+  lm_alpha: 0.5
+  lm_beta: 1.5
