@@ -1,6 +1,6 @@
 <div align="center">
 
-# SilentRead 👄
+# SilentRead 
 
 ### End-to-end lip reading — transcribe speech from silent video
 
