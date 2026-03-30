@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""VisioLex training entry-point.
+"""SilentRead training entry-point.
 
 Usage
 -----
@@ -33,14 +33,14 @@ import yaml
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from src.data import build_dataloaders
-from src.models import VisioLexModel
+from src.models import SilentReadModel
 from src.training import Trainer
 from src.utils import get_logger
 from src.utils.text import BLANK_IDX, VOCAB_SIZE
 
 
 def parse_args() -> argparse.Namespace:
-    p = argparse.ArgumentParser(description="Train VisioLex")
+    p = argparse.ArgumentParser(description="Train SilentRead")
     p.add_argument("--config", default="configs/train.yaml")
     p.add_argument("--grid_root", default=None,
                    help="Override config data.grid_root")
@@ -61,7 +61,7 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    logger = get_logger("visiolex.train")
+    logger = get_logger("silentread.train")
 
     # Load config
     with open(args.config) as f:
@@ -105,7 +105,7 @@ def main() -> None:
     )
 
     # Model
-    model = VisioLexModel(
+    model = SilentReadModel(
         vocab_size=VOCAB_SIZE,
         cnn_channels=mc.get("cnn_channels", [32, 64, 96]),
         gru_hidden=mc.get("gru_hidden", 256),

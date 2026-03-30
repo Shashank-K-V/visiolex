@@ -1,3 +1,3 @@
-from .lipnet import VisioLexModel
+from .lipnet import SilentReadModel
 
-__all__ = ["VisioLexModel"]
+__all__ = ["SilentReadModel"]

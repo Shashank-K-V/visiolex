@@ -1,4 +1,4 @@
-"""VisioLex — Gradio demo application.
+"""SilentRead — Gradio demo application.
 
 Upload a video clip → see the extracted mouth-crop frames → get the
 transcription.  Optionally uses beam-search decoding if pyctcdecode is
@@ -16,8 +16,8 @@ Deploy to Hugging Face Spaces
 
 Environment variables
 ---------------------
-  VISIOLEX_CHECKPOINT  Path to model checkpoint (overrides CLI arg).
-  VISIOLEX_LM_PATH     Path to KenLM .binary file (optional).
+  SILENTREAD_CHECKPOINT  Path to model checkpoint (overrides CLI arg).
+  SILENTREAD_LM_PATH     Path to KenLM .binary file (optional).
 """
 
 from __future__ import annotations
@@ -41,7 +41,7 @@ import gradio as gr
 
 from src.data.preprocessing import MouthCropExtractor
 from src.decoding.decoder import BeamCTCDecoder, GreedyCTCDecoder
-from src.models import VisioLexModel
+from src.models import SilentReadModel
 from src.utils.text import BLANK_IDX, VOCAB_SIZE
 
 DEFAULT_CHECKPOINT = str(_ROOT / "checkpoints" / "best.pt")
@@ -52,7 +52,7 @@ IMG_SIZE = 64
 # Model + extractor setup (loaded once at startup)                    #
 # ------------------------------------------------------------------ #
 
-_model: Optional[VisioLexModel] = None
+_model: Optional[SilentReadModel] = None
 _extractor: Optional[MouthCropExtractor] = None
 _decoder = None
 _device: torch.device = torch.device("cpu")
@@ -63,7 +63,7 @@ def _load_model(checkpoint_path: str, lm_path: Optional[str] = None) -> None:
 
     _device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    _model = VisioLexModel(vocab_size=VOCAB_SIZE)
+    _model = SilentReadModel(vocab_size=VOCAB_SIZE)
 
     if Path(checkpoint_path).exists():
         ckpt = torch.load(checkpoint_path, map_location=_device)
@@ -165,13 +165,13 @@ _CSS = """
 """
 
 def build_interface() -> gr.Blocks:
-    with gr.Blocks(title="VisioLex — Silent Lip Reading", css=_CSS) as demo:
+    with gr.Blocks(title="SilentRead — Silent Lip Reading", css=_CSS) as demo:
         gr.Markdown(
             """
-            # VisioLex
+            # SilentRead
             **Visual Speech Recognition · No microphone · No audio**
 
-            Upload a short video of someone speaking.  VisioLex watches the
+            Upload a short video of someone speaking.  SilentRead watches the
             mouth, extracts 75 frames of lip movement, and transcribes the
             words — purely from video.
             """
@@ -225,14 +225,14 @@ def build_interface() -> gr.Blocks:
 # ------------------------------------------------------------------ #
 
 def parse_args() -> argparse.Namespace:
-    p = argparse.ArgumentParser(description="VisioLex Gradio demo")
+    p = argparse.ArgumentParser(description="SilentRead Gradio demo")
     p.add_argument(
         "--checkpoint",
-        default=os.environ.get("VISIOLEX_CHECKPOINT", DEFAULT_CHECKPOINT),
+        default=os.environ.get("SILENTREAD_CHECKPOINT", DEFAULT_CHECKPOINT),
     )
     p.add_argument(
         "--lm_path",
-        default=os.environ.get("VISIOLEX_LM_PATH", None),
+        default=os.environ.get("SILENTREAD_LM_PATH", None),
         help="Optional path to KenLM .binary file",
     )
     p.add_argument("--share", action="store_true",

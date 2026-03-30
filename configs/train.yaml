@@ -26,7 +26,7 @@ training:
 
 wandb:
   enabled: true
-  project: "visiolex"
+  project: "silentread"
   entity: null                    # set to your W&B username
 
 decoding:

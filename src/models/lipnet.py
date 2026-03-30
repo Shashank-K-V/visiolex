@@ -1,4 +1,4 @@
-"""VisioLex model: 3D CNN spatial encoder + BiGRU temporal decoder.
+"""SilentRead model: 3D CNN spatial encoder + BiGRU temporal decoder.
 
 Architecture overview
 ---------------------
@@ -59,8 +59,8 @@ class _Conv3dBlock(nn.Module):
         return self.pool(F.relu(self.bn(self.conv(x))))
 
 
-class VisioLexModel(nn.Module):
-    """VisioLex lip-reading model (3D CNN + BiGRU + CTC-ready).
+class SilentReadModel(nn.Module):
+    """SilentRead lip-reading model (3D CNN + BiGRU + CTC-ready).
 
     Args:
         vocab_size: Number of output classes (including CTC blank).

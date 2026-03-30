@@ -1,6 +1,6 @@
 <div align="center">
 
-# VisioLex
+# SilentRead 👄
 
 ### End-to-end lip reading — transcribe speech from silent video
 
@@ -16,7 +16,7 @@
 
 ---
 
-VisioLex is an end-to-end visual speech recognition system built from scratch. It reads lip motion from silent video and outputs a text transcript — no microphone, no audio signal, no pretrained backbone. The model combines a 3D convolutional spatial encoder with a bidirectional GRU temporal decoder, trained with CTC loss directly on raw character sequences. MediaPipe Face Landmarker extracts a tight mouth ROI from each frame, giving the model a stable, speaker-agnostic input crop. The entire pipeline — preprocessing, training, and inference — runs natively on Apple M4 via PyTorch's MPS backend. Trained on 10,000 clips across 10 speakers from the GRID Corpus, VisioLex achieves **84.5% word-level accuracy (WER 0.155)** with 11.3M parameters and zero cloud compute.
+SilentRead is an end-to-end visual speech recognition system built from scratch. It reads lip motion from silent video and outputs a text transcript — no microphone, no audio signal, no pretrained backbone. The model combines a 3D convolutional spatial encoder with a bidirectional GRU temporal decoder, trained with CTC loss directly on raw character sequences. MediaPipe Face Landmarker extracts a tight mouth ROI from each frame, giving the model a stable, speaker-agnostic input crop. The entire pipeline — preprocessing, training, and inference — runs natively on Apple M4 via PyTorch's MPS backend. Trained on 10,000 clips across 10 speakers from the GRID Corpus, SilentRead achieves **84.5% word-level accuracy (WER 0.155)** with 11.3M parameters and zero cloud compute.
 
 ---
 
@@ -127,11 +127,11 @@ Hardware: Apple M4 Mac Mini, MPS backend. Cloud spend: $0.
 ### 1. Clone and install
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/visiolex.git
-cd visiolex
+git clone https://github.com/YOUR_USERNAME/silentread.git
+cd silentread
 
-conda create -n visiolex python=3.11 -y
-conda activate visiolex
+conda create -n silentread python=3.11 -y
+conda activate silentread
 
 # PyTorch first — anchors the dependency graph
 pip install torch torchvision torchaudio
@@ -192,14 +192,14 @@ python app/demo.py --checkpoint checkpoints/best.pt
 # → http://localhost:7860
 ```
 
-Upload a video clip or stream from webcam. VisioLex crops the mouth region in real time and outputs the lip-read transcript.
+Upload a video clip or stream from webcam. SilentRead crops the mouth region in real time and outputs the lip-read transcript.
 
 ---
 
 ## Project Structure
 
 ```
-visiolex/
+silentread/
 ├── configs/
 │   └── train.yaml              # all hyperparameters
 ├── src/
@@ -209,7 +209,7 @@ visiolex/
 │   │   ├── augmentation.py     # flip, brightness, crop, temporal jitter
 │   │   └── dataloader.py       # build_dataloaders()
 │   ├── models/
-│   │   └── lipnet.py           # VisioLexModel (3D CNN + BiGRU)
+│   │   └── lipnet.py           # SilentReadModel (3D CNN + BiGRU)
 │   ├── training/
 │   │   ├── trainer.py          # training loop
 │   │   └── ctc_loss.py         # CTCLoss wrapper (MPS-safe)
@@ -225,7 +225,7 @@ visiolex/
 │   └── demo.py                 # Gradio demo
 ├── tests/
 ├── notebooks/
-│   └── visiolex_colab.ipynb    # Colab training notebook
+│   └── silentread_colab.ipynb    # Colab training notebook
 └── requirements.txt
 ```
 

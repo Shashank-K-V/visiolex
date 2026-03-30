@@ -1,4 +1,4 @@
-"""Character vocabulary and text encoding utilities for VisioLex.
+"""Character vocabulary and text encoding utilities for SilentRead.
 
 GRID Corpus sentences use a restricted vocabulary of 51 words and 26 lower-case
 letters + space.  We work at the character level and reserve two special tokens:

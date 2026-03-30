@@ -1,4 +1,4 @@
-"""Unit tests for the VisioLex model architecture."""
+"""Unit tests for the SilentRead model architecture."""
 
 import sys
 from pathlib import Path
@@ -8,13 +8,13 @@ import torch
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from src.models import VisioLexModel
+from src.models import SilentReadModel
 from src.utils.text import VOCAB_SIZE
 
 
 @pytest.fixture
 def model():
-    return VisioLexModel(
+    return SilentReadModel(
         vocab_size=VOCAB_SIZE,
         cnn_channels=[8, 16, 24],   # small for speed
         gru_hidden=32,

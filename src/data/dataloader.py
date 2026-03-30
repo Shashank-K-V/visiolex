@@ -1,4 +1,4 @@
-"""DataLoader factory for VisioLex.
+"""DataLoader factory for SilentRead.
 
 Handles variable-length label sequences by padding them in ``collate_fn``.
 """

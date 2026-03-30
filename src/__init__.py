@@ -1,1 +1,1 @@
-# VisioLex — Visual Speech Recognition
+# SilentRead — Visual Speech Recognition

@@ -1,4 +1,4 @@
-"""VisioLex training loop.
+"""SilentRead training loop.
 
 Usage example
 -------------
@@ -51,7 +51,7 @@ class Trainer:
     """Manages training, validation, checkpointing, and W&B logging.
 
     Args:
-        model: The ``VisioLexModel`` instance.
+        model: The ``SilentReadModel`` instance.
         train_loader: DataLoader for training.
         val_loader: DataLoader for validation.
         config: Dict of training hyper-parameters (matches ``configs/train.yaml``
@@ -67,7 +67,7 @@ class Trainer:
         config: Dict,
         device: Optional[str] = None,
     ) -> None:
-        self.logger = get_logger("visiolex.trainer")
+        self.logger = get_logger("silentread.trainer")
         self.device = torch.device(
             device or ("cuda" if torch.cuda.is_available() else "cpu")
         )
@@ -117,7 +117,7 @@ class Trainer:
         self._use_wandb = wc.get("enabled", False) and _WANDB_AVAILABLE
         if self._use_wandb:
             wandb.init(
-                project=wc.get("project", "visiolex"),
+                project=wc.get("project", "silentread"),
                 entity=wc.get("entity", None),
                 config=config,
             )

@@ -1,4 +1,4 @@
-"""CTC decoders for VisioLex.
+"""CTC decoders for SilentRead.
 
 Two implementations are provided:
 

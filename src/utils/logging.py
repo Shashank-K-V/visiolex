@@ -1,4 +1,4 @@
-"""Logging utilities for VisioLex."""
+"""Logging utilities for SilentRead."""
 
 import logging
 import sys
@@ -7,7 +7,7 @@ from collections import deque
 from typing import Optional
 
 
-def get_logger(name: str = "visiolex", level: int = logging.INFO) -> logging.Logger:
+def get_logger(name: str = "silentread", level: int = logging.INFO) -> logging.Logger:
     logger = logging.getLogger(name)
     if not logger.handlers:
         handler = logging.StreamHandler(sys.stdout)
